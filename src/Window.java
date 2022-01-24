@@ -16,17 +16,17 @@ public class Window extends JFrame implements ActionListener{
 	
 	private String PASS = "root"; //bad security
 
-	private JPanel loginPanel;
-	private JPanel header;
-	private JPanel mainPanel;
-	
 	private int wid = 500, hei = 500;
 	
-	
+	//login
+	private JPanel loginPanel;
 	private JTextField loginText;
 	private JLabel loginLabel;
 	private JLabel passwordLabel;
 	private JPasswordField passwordText;
+	
+	//header
+	private JPanel header;
 	private String[] lang = {"English","Français"};
 	private JComboBox<String> languageComboBox;
 	private JButton loginButton;
@@ -36,22 +36,43 @@ public class Window extends JFrame implements ActionListener{
 	private JButton staffButton;
 	private JButton disconnectButton;
 	
+	//home
+	private JPanel homePanel;
+	private JLabel dailyStatsLabel;
+	
+	//stocks
+	private JPanel stockPanel;
+	
+	//staff
+	private JPanel staffPanel;
+	
+	//patients
+	private JPanel patientPanel;
 	
 	public Window() {
-		
-		homePageButton = new JButton("Home");
-		stockManagementButton = new JButton("Stocks");
-		patientButton = new JButton("Patients");
-		staffButton = new JButton("Staff");
-		disconnectButton = new JButton("Disconnect");
-		languageComboBox = new JComboBox<String>(lang);	
-		languageComboBox.setMaximumSize(new Dimension(1920, 30));
 		
 		this.setSize(wid,hei);
 		this.setMinimumSize(new Dimension(wid,hei));
 		
 		this.setTitle("Safeguard");
 		
+		//instantiations
+		homePageButton = new JButton("Home");
+		homePageButton.addActionListener(this);
+		stockManagementButton = new JButton("Stocks");
+		stockManagementButton.addActionListener(this);
+		patientButton = new JButton("Patients");
+		patientButton.addActionListener(this);
+		staffButton = new JButton("Staff");
+		staffButton.addActionListener(this);
+		disconnectButton = new JButton("Disconnect");
+		disconnectButton.addActionListener(this);
+		languageComboBox = new JComboBox<String>(lang);	
+		languageComboBox.setMaximumSize(new Dimension(1920, 30));
+		
+		dailyStatsLabel = new JLabel("Daily Stats :");
+		
+		//header
 		header = new JPanel();
 		
 		header.setLayout(new BoxLayout(header, BoxLayout.X_AXIS));
@@ -61,18 +82,33 @@ public class Window extends JFrame implements ActionListener{
 		header.add(staffButton);
 		header.add(languageComboBox);
 		header.add(disconnectButton);
+		//end header
 		
-		mainPanel = new JPanel();
-		mainPanel.add(header);
+		//home
+		homePanel = new JPanel();
+		homePanel.setLayout(new BoxLayout(homePanel, BoxLayout.Y_AXIS));
+		//end home
 		
+		//stock
+		stockPanel = new JPanel();
+		stockPanel.setLayout(new BoxLayout(stockPanel, BoxLayout.Y_AXIS));
+		//end stock
 		
+		//staff
+		staffPanel = new JPanel();
+		staffPanel.setLayout(new BoxLayout(staffPanel, BoxLayout.Y_AXIS));
+		//end staff
+		
+		//patients
+		patientPanel = new JPanel();
+		patientPanel.setLayout(new BoxLayout(staffPanel, BoxLayout.Y_AXIS));
+		//end patients
 			
-		
+		// login
 		loginPanel = new JPanel();
 		
-		
 		loginPanel.add(languageComboBox);
-		loginPanel.add(Box.createRigidArea(new Dimension(0,this.getHeight()/6)));
+//		loginPanel.add(Box.createRigidArea(new Dimension(0,this.getHeight()/6)));
 		loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.PAGE_AXIS));
 		
 		loginLabel = new JLabel("Login : ");
@@ -93,14 +129,13 @@ public class Window extends JFrame implements ActionListener{
 		loginButton.setMaximumSize(new Dimension(1920, 30));
 		loginButton.addActionListener(this);
 		
-		loginPanel.add(Box.createRigidArea(new Dimension(200,this.getHeight()/6)));
+//		loginPanel.add(Box.createRigidArea(new Dimension(200,this.getHeight()/6)));
 		loginPanel.add(loginButton);
-		
+		//end login
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.setContentPane(loginPanel);
-		
 		
 		this.setVisible(true);
 	}
@@ -111,24 +146,61 @@ public class Window extends JFrame implements ActionListener{
 		
 		if(e.getSource() == loginButton) {
 			if(loginText.getText().equals("root") && PASS.equals(String.valueOf(passwordText.getPassword()))) {
-				initializeContent(mainPanel);
+				loginText.setText("");
+				passwordText.setText("");
+				initHomePanel();
 			}
+		}else if(e.getSource() == disconnectButton) {
+			initLoginPanel();
 		}else if(e.getSource() == homePageButton) {
-			initializeContent(loginPanel);
+			initHomePanel();
+		}else if(e.getSource() == stockManagementButton){
+			initStockPanel();
+		}else if(e.getSource() == patientButton) {
+			initPatientPanel();
+		}else if(e.getSource() == staffButton) {
+			initStaffPanel();
 		}
+
+	}	
+	
+	private void initStaffPanel() {
+		staffPanel.add(header);
+		this.setContentPane(staffPanel);
+		this.revalidate();
+	}
+
+
+	private void initPatientPanel() {
+		patientPanel.add(header);
+		this.setContentPane(patientPanel);
+		this.revalidate();
+	}
+
+
+	private void initHomePanel() {
+		homePanel.add(header);
+		homePanel.add(dailyStatsLabel);
+		this.setContentPane(homePanel);
+		this.revalidate();
 	}
 	
-	private void initializeContent(JPanel jp) {
-		this.setSize(wid,hei);
-		this.setMinimumSize(new Dimension(wid,hei));
-		
-		this.setContentPane(jp);
-		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setContentPane(new JPanel());
-		this.setVisible(true);
+	private void initLoginPanel() {
+		loginPanel.add(languageComboBox);
+		loginPanel.add(loginLabel);
+		loginPanel.add(loginText);
+		loginPanel.add(passwordLabel);
+		loginPanel.add(passwordText);
+		loginPanel.add(loginButton);
+		this.setContentPane(loginPanel);
+		this.revalidate();
 	}
 	
+	private void initStockPanel() {
+		stockPanel.add(header);
+		this.setContentPane(stockPanel);
+		this.revalidate();
+	}
 
 }
 
