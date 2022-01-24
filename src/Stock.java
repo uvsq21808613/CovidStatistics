@@ -40,6 +40,22 @@ public class Stock {
 		addStockByName("GEL", quanity);
 	}
 	
+	public static void addVaccinFizer(int quanity) throws SQLException {
+		addStockByName("VACCIN-PFIZER", quanity);
+	}
+	
+	public static void addVaccinModerna(int quanity) throws SQLException {
+		addStockByName("VACCIN-MODERNA", quanity);
+	}
+	
+	public static void addTestPcr(int quanity) throws SQLException {
+		addStockByName("TEST-PCR", quanity);
+	}
+	
+	public static void addTestAnti(int quanity) throws SQLException {
+		addStockByName("TEST-ANTI", quanity);
+	}
+	
 	public static void addStockByName(String name, int quanity) throws SQLException {
 		SqlHandler.setTup();
 		SqlHandler.addStockQuery(name, quanity);
