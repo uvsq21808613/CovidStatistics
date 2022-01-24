@@ -42,6 +42,9 @@ public class SqlHandler {
 			conn = DriverManager.getConnection(sql_with_db, sql_username, sql_password);
 			
 			createStockTable(conn);
+			createPersonnelTable(conn);
+			createPatientTable(conn);
+			createAppointmentTable(conn);
 		}
 		
 		
@@ -69,7 +72,18 @@ public class SqlHandler {
 		stmt.executeUpdate(sql_query);
 	}
 	
-	
+	public static ResultSet executeQuery(String query) throws SQLException {
+		String sql_with_db = sql_jdbc + getDbName();
+		conn = DriverManager.getConnection(sql_with_db, sql_username, sql_password);
+		ResultSet rs = conn.createStatement().executeQuery(query);
+		return rs;
+	}
+	public static void executeQueryWithNoReturn(String query) throws SQLException {
+		String sql_with_db = sql_jdbc + getDbName();
+		conn = DriverManager.getConnection(sql_with_db, sql_username, sql_password);
+		conn.createStatement().executeUpdate(query);
+		
+	} 
 	public static void addStockQuery(String name, int quanity) throws SQLException {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -122,6 +136,57 @@ public class SqlHandler {
 		sql = "INSERT INTO STOCK (name, quantity) values('TEST-ANTI', 0)";
 		conn.createStatement().executeUpdate(sql);
 	}
+	
+	public static void createPersonnelTable(Connection conn) throws SQLException {
+		
+		String sql = "CREATE TABLE STAFF " +
+	              "(id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+	              " first_name VARCHAR(255), " + 
+	              " last_name VARCHAR(255), " + 
+	              " username VARCHAR(255), " + 
+	              " phone VARCHAR(255), " + 
+	              " email VARCHAR(255) DEFAULT NULL " +  " ) ;";
+		
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(sql);
+		
+	}
+	
+	public static void createPatientTable(Connection conn) throws SQLException {
+		
+		String sql = "CREATE TABLE PATIENT " +
+	              "(id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+	              " first_name VARCHAR(255), " + 
+	              " last_name VARCHAR(255), " +
+	              " address VARCHAR(255), " +
+	              " vaccin_type VARCHAR(255), " + 
+	              " vaccin_cov VARCHAR(255), " + 
+	              " phone VARCHAR(255), " + 
+	              " next_vaccin_date DATE, " + 
+	              " last_vaccin_date DATE, " + 
+	              " email VARCHAR(255) NOT NULL DEFAULT '' " +  " ) ;";
+		
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(sql);
+		
+	}
+	
+	public static void createAppointmentTable(Connection conn) throws SQLException {
+		
+		String sql = "CREATE TABLE APPOINTMENT " +
+	              "(id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+	              " patient_id INTEGER, " + 
+	              " staff_id INTEGER, " + 
+	              " date DATE, " + 
+	              " FOREIGN KEY (staff_id) REFERENCES STAFF(id), " + 
+	              " FOREIGN KEY (patient_id) REFERENCES PATIENT(id) " +  " ) ;";
+		
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(sql);
+		
+	}
+	
+	
 	public static void main(String args[]) throws SQLException {
 		System.out.println("SQDQS");
 		SqlHandler.setTup();
