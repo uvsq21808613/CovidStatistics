@@ -60,6 +60,34 @@ public class Stock {
 		SqlHandler.setTup();
 		SqlHandler.addStockQuery(name, quanity);
 	}
+	public static void replaceMask(int quanity) throws SQLException {
+		replaceStockByName("MASK", quanity);
+	}
+	
+	public static void replaceGel(int quanity) throws SQLException {
+		replaceStockByName("GEL", quanity);
+	}
+	
+	public static void replaceVaccinFizer(int quanity) throws SQLException {
+		replaceStockByName("VACCIN-PFIZER", quanity);
+	}
+	
+	public static void replaceVaccinModerna(int quanity) throws SQLException {
+		replaceStockByName("VACCIN-MODERNA", quanity);
+	}
+	
+	public static void replaceTestPcr(int quanity) throws SQLException {
+		replaceStockByName("TEST-PCR", quanity);
+	}
+	
+	public static void replaceTestAnti(int quanity) throws SQLException {
+		replaceStockByName("TEST-ANTI", quanity);
+	}
+	
+	public static void replaceStockByName(String name, int quanity) throws SQLException {
+		SqlHandler.setTup();
+		SqlHandler.replaceStockQuery(name, quanity);
+	}
 	
 	public static void main(String args[]) throws SQLException {
 		System.out.println(getStockByNameAndDate("MASK", "2022-01-24"));
