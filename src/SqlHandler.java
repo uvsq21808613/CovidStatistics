@@ -96,6 +96,18 @@ public class SqlHandler {
 		
 		
 	}
+	public static void replaceStockQuery(String name, int quanity) throws SQLException {
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+		String date_str = dateFormat.format(date);
+		int current = getStockQuery(name, date_str);
+		int new_quanity = current + quanity;
+		String sql = "UPDATE STOCK SET quantity = "+new_quanity+ " WHERE name = '"+name+"' and date = '"+date_str+"' ;";
+		conn.createStatement().executeUpdate(sql);
+		
+		
+	}
 	public static int getStockQuery(String name , String date) throws SQLException {
 		
 		String sql_with_db = sql_jdbc + getDbName();
