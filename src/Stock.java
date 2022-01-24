@@ -7,7 +7,7 @@ public class Stock {
 		return getStockByNameAndDate("MASK", date);
 	}
 	
-	public static int getGetByDay(String date) throws SQLException {
+	public static int getGelByDay(String date) throws SQLException {
 		return getStockByNameAndDate("GEL", date);
 	}
 	
@@ -19,6 +19,14 @@ public class Stock {
 		return getStockByNameAndDate("VACCIN-MODERNA", date);
 	}
 	
+	public static int getTestPcrByDay(String date) throws SQLException {
+		return getStockByNameAndDate("TEST-PCR", date);
+	}
+	
+	public static int getTestAntiByDay(String date) throws SQLException {
+		return getStockByNameAndDate("TEST-ANTI", date);
+	}
+	
 	public static int getStockByNameAndDate(String name, String date) throws SQLException {
 		SqlHandler.setTup();
 		return SqlHandler.getStockQuery(name, date);
@@ -28,15 +36,18 @@ public class Stock {
 		addStockByName("MASK", quanity);
 	}
 	
+	public static void addGel(int quanity) throws SQLException {
+		addStockByName("GEL", quanity);
+	}
+	
 	public static void addStockByName(String name, int quanity) throws SQLException {
+		SqlHandler.setTup();
 		SqlHandler.addStockQuery(name, quanity);
 	}
+	
 	public static void main(String args[]) throws SQLException {
-		System.out.println("DD");
 		System.out.println(getStockByNameAndDate("MASK", "2022-01-24"));
-		addMask(20);
-		System.out.println(getStockByNameAndDate("MASK", "2022-01-24"));
-		
+		System.out.println(getGelByDay("2022-01-24"));
 	}
 
 }

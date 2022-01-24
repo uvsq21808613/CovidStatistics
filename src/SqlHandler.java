@@ -71,13 +71,13 @@ public class SqlHandler {
 	
 	
 	public static void addStockQuery(String name, int quanity) throws SQLException {
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
 		String date_str = dateFormat.format(date);
 		int current = getStockQuery(name, date_str);
 		int new_quanity = current + quanity;
 		String sql = "UPDATE STOCK SET quantity = "+new_quanity+ " WHERE name = '"+name+"' and date = '"+date_str+"' ;";
-		System.out.println(sql);
 		conn.createStatement().executeUpdate(sql);
 		
 		
@@ -88,12 +88,12 @@ public class SqlHandler {
 		conn = DriverManager.getConnection(sql_with_db, sql_username, sql_password);
 		
 		String sql = "select quantity from STOCK WHERE name = '"+name+"' and date = '"+date+"' ;";
-		System.out.println(sql);
 		ResultSet rs = conn.createStatement().executeQuery(sql);
-		if (!rs.next()) {
+		if (rs.next()) {
 			return rs.getInt("quantity");
 		}
 		else {
+			
 			sql = "INSERT INTO STOCK (name, quantity) values('"+name+"', 0)";
 			conn.createStatement().executeUpdate(sql);
 			return 0;
