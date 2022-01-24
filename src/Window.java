@@ -1,6 +1,10 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,7 +31,7 @@ public class Window extends JFrame implements ActionListener{
 	
 	//header
 	private JPanel header;
-	private String[] lang = {"English","Français"};
+	private String[] lang = {"English","FranÃ§ais"};
 	private JComboBox<String> languageComboBox;
 	private JButton loginButton;
 	private JButton homePageButton;
@@ -42,6 +46,21 @@ public class Window extends JFrame implements ActionListener{
 	
 	//stocks
 	private JPanel stockPanel;
+	private JPanel bottomLine;
+	private JLabel dateLabel;
+	private JTextField dateField;
+	private JLabel stockLabel;
+	private JLabel nbMaskLabel;
+	private JLabel nbPcrLabel;
+	private JLabel nbAntigenLabel;
+	private JLabel nbVacPfizerLabel;
+	private JLabel nbVaccineModernaLabel;
+	private JLabel stockModLabel;
+	private JTextField newStockField;
+	private String[] stockStr = {"Mask","PCR","Antigen","Pfizer","Moderna"};
+	private String currentDay;
+	private JComboBox<String> stockComboBox;
+	private JButton submitStocksButton;
 	
 	//staff
 	private JPanel staffPanel;
@@ -72,6 +91,41 @@ public class Window extends JFrame implements ActionListener{
 		
 		dailyStatsLabel = new JLabel("Daily Stats :");
 		
+		dateLabel = new JLabel("date :");
+		dateField = new JTextField();
+		dateField.setMaximumSize(new Dimension(1920, 30));
+		stockLabel = new JLabel("Stocks of the day :");
+		stockModLabel = new JLabel("Stock modification");
+		stockComboBox = new JComboBox<String>(stockStr);
+		stockComboBox.setMaximumSize(new Dimension(1920, 30));
+		
+		nbMaskLabel = new JLabel();
+		nbMaskLabel.setMaximumSize(new Dimension(1920, 30));
+		nbPcrLabel = new JLabel();
+		nbAntigenLabel = new JLabel();
+		nbVacPfizerLabel = new JLabel();
+		nbVaccineModernaLabel = new JLabel();
+		
+		newStockField =new JTextField();
+		newStockField.setMaximumSize(new Dimension(1920, 30));
+		newStockField.addKeyListener((KeyListener) new KeyAdapter() {
+			public void keyPressed(KeyEvent ke) {
+				if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') {
+					newStockField.setEditable(true);
+				} else {
+					newStockField.setEditable(false);
+				}
+			}
+		});
+		submitStocksButton =new JButton("Submit");
+		submitStocksButton.addActionListener(this);
+		bottomLine =new JPanel();
+		bottomLine.setLayout(new BoxLayout(bottomLine, BoxLayout.X_AXIS));
+		bottomLine.add(stockModLabel);
+		bottomLine.add(newStockField);
+		bottomLine.add(stockComboBox);
+		bottomLine.add(submitStocksButton);
+		
 		//header
 		header = new JPanel();
 		
@@ -91,7 +145,7 @@ public class Window extends JFrame implements ActionListener{
 		
 		//stock
 		stockPanel = new JPanel();
-		stockPanel.setLayout(new BoxLayout(stockPanel, BoxLayout.Y_AXIS));
+		stockPanel.setLayout(new BoxLayout(stockPanel, BoxLayout.Y_AXIS));		
 		//end stock
 		
 		//staff
@@ -101,7 +155,7 @@ public class Window extends JFrame implements ActionListener{
 		
 		//patients
 		patientPanel = new JPanel();
-		patientPanel.setLayout(new BoxLayout(staffPanel, BoxLayout.Y_AXIS));
+		patientPanel.setLayout(new BoxLayout(patientPanel, BoxLayout.Y_AXIS));
 		//end patients
 			
 		// login
@@ -155,11 +209,50 @@ public class Window extends JFrame implements ActionListener{
 		}else if(e.getSource() == homePageButton) {
 			initHomePanel();
 		}else if(e.getSource() == stockManagementButton){
-			initStockPanel();
+			try {
+				initStockPanel();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.out.println("error stocks");
+			}
 		}else if(e.getSource() == patientButton) {
 			initPatientPanel();
 		}else if(e.getSource() == staffButton) {
 			initStaffPanel();
+		}else if(e.getSource() == submitStocksButton) {
+			if(!newStockField.getText().toString().equals("") == !dateField.getText().toString().equals("")) {
+				String s = String.valueOf(stockComboBox.getSelectedItem());
+				try {
+					switch(s) {
+					case "Mask":
+						Stock.replaceMask(Integer.parseInt(newStockField.getText().toString()));
+						break;
+					case "Pfizer":
+						Stock.replaceVaccinFizer(Integer.parseInt(newStockField.getText().toString()));
+						break;
+					case "Moderna":
+						Stock.replaceVaccinModerna(Integer.parseInt(newStockField.getText().toString()));
+						break;
+					case "PCR":
+						Stock.replaceTestPcr(Integer.parseInt(newStockField.getText().toString()));
+						break;
+					case "Antigen":
+						Stock.replaceTestAnti(Integer.parseInt(newStockField.getText().toString()));
+						break;
+
+					}
+				}catch(NumberFormatException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					initStockPanel();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 
 	}	
@@ -196,10 +289,41 @@ public class Window extends JFrame implements ActionListener{
 		this.revalidate();
 	}
 	
-	private void initStockPanel() {
+	private void initStockPanel() throws SQLException {
 		stockPanel.add(header);
+		stockPanel.add(stockLabel);
+		stockPanel.add(dateLabel);
+		stockPanel.add(dateField);
+		if(dateField.getText().toString().equals("")) {
+			dateField.setText("2022-01-24");
+		}
+		currentDay  = dateField.getText().toString();
+		int tempVar = Stock.getMaskByDay(currentDay);
+		nbMaskLabel.setText("Number of masks : "+String.valueOf(tempVar));
+		stockPanel.add(nbMaskLabel);
+		
+		tempVar = Stock.getTestPcrByDay(currentDay);
+		nbPcrLabel.setText("Number of PCR tests : "+String.valueOf(tempVar));
+		stockPanel.add(nbPcrLabel);
+		
+		tempVar = Stock.getTestAntiByDay(currentDay);
+		nbAntigenLabel.setText("Number of Antigen tests : "+String.valueOf(tempVar));
+		stockPanel.add(nbAntigenLabel);
+		
+		tempVar = Stock.getVaccinFizerByDay(currentDay);
+		nbVacPfizerLabel.setText("Number of Pfizer Vaccines : "+String.valueOf(tempVar));
+		stockPanel.add(nbVacPfizerLabel);
+		
+		tempVar = Stock.getVaccinModernaByDay(currentDay);
+		nbVaccineModernaLabel.setText("Number of Moderna Vaccines : "+String.valueOf(tempVar));
+		stockPanel.add(nbVaccineModernaLabel);
+		
+		stockPanel.add(bottomLine);
+
 		this.setContentPane(stockPanel);
+		
 		this.revalidate();
+//		System.out.println("stocks updated");
 	}
 
 }
