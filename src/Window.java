@@ -67,6 +67,28 @@ public class Window extends JFrame implements ActionListener{
 	
 	//patients
 	private JPanel patientPanel;
+	private JPanel patientResearchPanel;
+	private JLabel patientResearchLabel;
+	private JTextField patientResearchField, 
+		patientLastNameField, 
+		patientFirstNameField,
+		patientPhoneNbField, 
+		patientIDField, 
+		patientVaccineTypeField, 
+		patientLastDoseDateField, 
+		patientMailField, 
+		patientAddressField, 
+		patientCoverageField;
+	private JButton patientResearchButton, patientSubmitButton;
+	private JLabel patientLastNameLabel, 
+		patientFirstNameLabel, 
+		patientPhoneNbLabel, 
+		patientIDLabel, 
+		patientVaccineTypeLabel, 
+		patientLastDoseDateLabel, 
+		patientMailLabel, 
+		patientAddressLabel, 
+		patientCoverageLabel;
 	
 	public Window() {
 		
@@ -125,6 +147,50 @@ public class Window extends JFrame implements ActionListener{
 		bottomLine.add(newStockField);
 		bottomLine.add(stockComboBox);
 		bottomLine.add(submitStocksButton);
+		
+		patientResearchLabel = new JLabel("Research panel :");
+		patientResearchField = new JTextField();
+		patientResearchField.setMaximumSize(new Dimension(1920, 30));
+		
+		patientLastNameField= new JTextField();
+		patientFirstNameField= new JTextField();
+		patientPhoneNbField= new JTextField();
+		patientIDField= new JTextField();
+		patientVaccineTypeField= new JTextField();
+		patientLastDoseDateField= new JTextField();
+		patientMailField= new JTextField();
+		patientAddressField= new JTextField();
+		patientCoverageField= new JTextField();
+		
+		patientLastNameField.setMaximumSize(new Dimension(1920, 30));
+		patientFirstNameField.setMaximumSize(new Dimension(1920, 30));
+		patientPhoneNbField.setMaximumSize(new Dimension(1920, 30));
+		patientIDField.setMaximumSize(new Dimension(1920, 30));
+		patientVaccineTypeField.setMaximumSize(new Dimension(1920, 30));
+		patientLastDoseDateField.setMaximumSize(new Dimension(1920, 30));
+		patientMailField.setMaximumSize(new Dimension(1920, 30));
+		patientAddressField.setMaximumSize(new Dimension(1920, 30));
+		patientCoverageField.setMaximumSize(new Dimension(1920, 30));
+		
+		patientResearchButton = new JButton("Research");
+		patientResearchButton.addActionListener(this);
+		patientSubmitButton = new JButton("Submit");
+		patientSubmitButton.addActionListener(this);
+		patientLastNameLabel = new JLabel("Last Name"); 
+		patientFirstNameLabel = new JLabel("First Name");
+		patientPhoneNbLabel = new JLabel("Phone Number");
+		patientIDLabel = new JLabel("ID");
+		patientVaccineTypeLabel = new JLabel("Vaccine Type");
+		patientLastDoseDateLabel = new JLabel("Last Dose Date");
+		patientMailLabel = new JLabel("Mail");
+		patientAddressLabel = new JLabel("Address");
+		patientCoverageLabel = new JLabel("Coverage");
+		
+		patientResearchPanel = new JPanel();
+		patientResearchPanel.setLayout(new BoxLayout(patientResearchPanel, BoxLayout.X_AXIS));
+		patientResearchPanel.add(patientResearchLabel);
+		patientResearchPanel.add(patientResearchField);
+		patientResearchPanel.add(patientResearchButton);
 		
 		//header
 		header = new JPanel();
@@ -253,6 +319,10 @@ public class Window extends JFrame implements ActionListener{
 					e1.printStackTrace();
 				}
 			}
+		}else if(e.getSource() == patientResearchButton) {
+			initPatientPanel();
+		}else if(e.getSource() == patientSubmitButton) {
+			
 		}
 
 	}	
@@ -266,6 +336,29 @@ public class Window extends JFrame implements ActionListener{
 
 	private void initPatientPanel() {
 		patientPanel.add(header);
+		patientPanel.add(patientResearchPanel);
+		patientPanel.add(patientLastNameLabel);
+		patientPanel.add(patientLastNameField);
+		patientPanel.add(patientFirstNameLabel);
+		patientPanel.add(patientFirstNameField);
+		patientPanel.add(patientPhoneNbLabel);
+		patientPanel.add(patientPhoneNbField);
+		patientPanel.add(patientIDLabel);
+		patientPanel.add(patientIDField);
+		patientPanel.add(patientVaccineTypeLabel);
+		patientPanel.add(patientVaccineTypeField);
+		patientPanel.add(patientLastDoseDateLabel);
+		patientPanel.add(patientLastDoseDateField);
+		patientPanel.add(patientMailLabel);
+		patientPanel.add(patientMailField);
+		patientPanel.add(patientAddressLabel);
+		patientPanel.add(patientAddressField);
+		patientPanel.add(patientCoverageLabel);
+		patientPanel.add(patientCoverageField);
+		
+		patientPanel.add(patientSubmitButton);
+		
+		
 		this.setContentPane(patientPanel);
 		this.revalidate();
 	}

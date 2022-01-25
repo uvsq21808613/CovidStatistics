@@ -101,7 +101,7 @@ public class SqlHandler {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
 		String date_str = dateFormat.format(date);
-		int current = getStockQuery(name, date_str);
+		//int current = getStockQuery(name, date_str);
 		int new_quanity = quanity;
 		String sql = "UPDATE STOCK SET quantity = "+new_quanity+ " WHERE name = '"+name+"' and date = '"+date_str+"' ;";
 		conn.createStatement().executeUpdate(sql);
