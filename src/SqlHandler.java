@@ -47,9 +47,6 @@ public class SqlHandler {
 			createAppointmentTable(conn);
 		}
 		
-		
-		
-		
 	}
 	public static boolean isExisteDb() throws SQLException {
 		
@@ -102,8 +99,8 @@ public class SqlHandler {
         Date date = new Date();
 		String date_str = dateFormat.format(date);
 		//int current = getStockQuery(name, date_str);
-		int new_quanity = quanity;
-		String sql = "UPDATE STOCK SET quantity = "+new_quanity+ " WHERE name = '"+name+"' and date = '"+date_str+"' ;";
+//		int new_quanity = quanity;
+		String sql = "UPDATE STOCK SET quantity = "+quanity+ " WHERE name = '"+name+"' and date = '"+date_str+"' ;";
 		conn.createStatement().executeUpdate(sql);
 		
 		
@@ -174,8 +171,8 @@ public class SqlHandler {
 	              " vaccin_type VARCHAR(255), " + 
 	              " vaccin_cov VARCHAR(255), " + 
 	              " phone VARCHAR(255), " + 
-	              " next_vaccin_date DATE, " + 
-	              " last_vaccin_date DATE, " + 
+	              " next_vaccin_date VARCHAR(255), " + 
+	              " last_vaccin_date VARCHAR(255), " + 
 	              " email VARCHAR(255) NOT NULL DEFAULT '' " +  " ) ;";
 		
 		Statement stmt = conn.createStatement();
@@ -189,7 +186,7 @@ public class SqlHandler {
 	              "(id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
 	              " patient_id INTEGER, " + 
 	              " staff_id INTEGER, " + 
-	              " date DATE, " + 
+	              " date VARCHAR(255), " + 
 	              " FOREIGN KEY (staff_id) REFERENCES STAFF(id), " + 
 	              " FOREIGN KEY (patient_id) REFERENCES PATIENT(id) " +  " ) ;";
 		

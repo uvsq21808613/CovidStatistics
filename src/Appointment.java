@@ -92,33 +92,33 @@ public static List<Appointment> getAllAppointments() throws SQLException, ParseE
 
 	
 	
-public static void main(String args []) throws SQLException, ParseException {
-	
-	SqlHandler.setTup();
-	Staff st = new Staff("Carlos", "Maria", "+336565657", "carloa@gmail.com");
-	Staff.addStaffToDb(st);
-	
-	Staff random_staff = Staff.getAllStaffs().get(0);
-	
-	Patient p = new Patient();
-	
-	p.firstName = "Cami";
-	p.lastName = "Dono";
-	p.address = "Mulhouse";
-	p.mail = "cami@gmail.com";
-	p.vaccine = VaccineType.PFIZER;
-	p.numberOfDoses = 2;
-	p.nextAppointment = new Date();
-	p.lastDose = new Date();
-	
-	SqlHandler.setTup();
-	Patient.addPatientToDb(p);
-	
-	Patient random_patient = Patient.getAllPatients().get(0);
-	
-	Appointment app = new Appointment(random_staff.ID, random_patient.ID,  new Date(), 60, "Second Vaccin");
-	Appointment.addAppointmentToDb(app);
-	System.out.println(Appointment.getAllAppointments());
-}
+//public static void main(String args []) throws SQLException, ParseException {
+//	
+//	SqlHandler.setTup();
+//	Staff st = new Staff("Carlos", "Maria", "+336565657", "carloa@gmail.com");
+//	Staff.addStaffToDb(st);
+//	
+//	Staff random_staff = Staff.getAllStaffs().get(0);
+//	
+//	Patient p = new Patient();
+//	
+//	p.firstName = "Cami";
+//	p.lastName = "Dono";
+//	p.address = "Mulhouse";
+//	p.mail = "cami@gmail.com";
+////	p.vaccine = VaccineType.PFIZER;
+//	p.numberOfDoses = 2;
+//	p.nextAppointment = new Date();
+//	p.lastDose = new Date();
+//	
+//	SqlHandler.setTup();
+//	Patient.addPatientToDb(p);
+//	
+//	Patient random_patient = Patient.getAllPatients().get(0);
+//	
+//	Appointment app = new Appointment(random_staff.ID, random_patient.ID,  new Date(), 60, "Second Vaccin");
+//	Appointment.addAppointmentToDb(app);
+//	System.out.println(Appointment.getAllAppointments());
+//}
 
 }

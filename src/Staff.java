@@ -77,7 +77,7 @@ public class Staff {
 		
 		String query = "select * from STAFF WHERE id ="+ID+";";
 		ResultSet result = SqlHandler.executeQuery(query);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		while(result.next()) {
 			Staff p = new Staff(result.getString("first_name"),
@@ -91,11 +91,11 @@ public class Staff {
 		}
 		return null;
 	}
-	public static void main(String args[]) throws SQLException, ParseException{
-		SqlHandler.setTup();
-		Staff st = new Staff("Carlos", "Maria", "+336565657", "carloa@gmail.com");
-		Staff.addStaffToDb(st);
-		System.out.println(Staff.getStaffByID(1).firstName);
-	}
+//	public static void main(String args[]) throws SQLException, ParseException{
+//		SqlHandler.setTup();
+//		Staff st = new Staff("Carlos", "Maria", "+336565657", "carloa@gmail.com");
+//		Staff.addStaffToDb(st);
+//		System.out.println(Staff.getStaffByID(1).firstName);
+//	}
 
 }

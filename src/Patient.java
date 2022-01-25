@@ -1,11 +1,11 @@
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
 public class Patient {
@@ -16,15 +16,15 @@ public class Patient {
 	public int ID;
 	public String address;
 	public String mail;
-	public VaccineType vaccine;
+	public String vaccine;
 	public int numberOfDoses;
-	public Date nextAppointment;
-	public Date lastDose;
+	public String nextAppointment;
+	public String lastDose;
 	
 	
 	public Patient() {}
 	public Patient(String firstName, String lastName, String phoneNumber, int iD, String address, String mail,
-			VaccineType vaccine, int numberOfDoses, Date nextAppointment, Date lastDose) {
+			String vaccine, int numberOfDoses, String nextAppointment, String lastDose) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -74,10 +74,10 @@ public class Patient {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public VaccineType getVaccine() {
+	public String getVaccine() {
 		return vaccine;
 	}
-	public void setVaccine(VaccineType vaccine) {
+	public void setVaccine(String vaccine) {
 		this.vaccine = vaccine;
 	}
 	public int getNumberOfDoses() {
@@ -86,16 +86,16 @@ public class Patient {
 	public void setNumberOfDoses(int numberOfDoses) {
 		this.numberOfDoses = numberOfDoses;
 	}
-	public Date getNextAppointment() {
+	public String getNextAppointment() {
 		return nextAppointment;
 	}
-	public void setNextAppointment(Date nextAppointment) {
+	public void setNextAppointment(String nextAppointment) {
 		this.nextAppointment = nextAppointment;
 	}
-	public Date getLastDose() {
+	public String getLastDose() {
 		return lastDose;
 	}
-	public void setLastDose(Date lastDose) {
+	public void setLastDose(String lastDose) {
 		this.lastDose = lastDose;
 	}
 	public static List<Patient> getAllPatients() throws SQLException, ParseException{
@@ -114,11 +114,11 @@ public class Patient {
 			p.mail = result.getString("email");
 			p.ID = result.getInt("id");
 			
-			p.vaccine = (result.getString("vaccin_type") == "PFIZER") ? VaccineType.PFIZER : VaccineType.MODERNA;
+			p.vaccine = result.getString("vaccin_type");
 			
 			p.numberOfDoses = result.getInt("vaccin_cov");
-			p.nextAppointment = formatter.parse(result.getString("next_vaccin_date"));
-			p.lastDose = formatter.parse(result.getString("last_vaccin_date"));
+			p.nextAppointment = /*formatter.parse*/(result.getString("next_vaccin_date"));
+			p.lastDose = /*formatter.parse*/(result.getString("last_vaccin_date"));
 			list.add(p);
 			
 		}
@@ -128,7 +128,7 @@ public class Patient {
 	public static Patient getPatientByID(int ID) throws SQLException, ParseException {
 		String query = "select * from PATIENT WHERE id ="+ID+";";
 		ResultSet result = SqlHandler.executeQuery(query);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		while(result.next()) {
 			Patient p = new Patient();
@@ -139,12 +139,12 @@ public class Patient {
 			p.mail = result.getString("email");
 			p.ID = result.getInt("id");
 			
-			p.vaccine = (result.getString("vaccin_type") == "PFIZER") ? VaccineType.PFIZER : VaccineType.MODERNA;
+			p.vaccine = result.getString("vaccin_type");
 			
 			p.numberOfDoses = result.getInt("vaccin_cov");
-			p.nextAppointment = formatter.parse(result.getString("next_vaccin_date"));
-			p.lastDose = formatter.parse(result.getString("last_vaccin_date"));
-			
+			p.nextAppointment = /*formatter.parse*/result.getString("next_vaccin_date");
+			p.lastDose = /*formatter.parse*/result.getString("last_vaccin_date");
+			System.out.println(p.firstName);
 			return p;
 			
 		}
@@ -154,40 +154,40 @@ public class Patient {
 	
 	public static void addPatientToDb(Patient patient) throws SQLException {
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String next_date = dateFormat.format(patient.nextAppointment);
-		String last_date = dateFormat.format(patient.lastDose);
+//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		String next_date = dateFormat.format(patient.nextAppointment);
+//		String last_date = dateFormat.format(patient.lastDose);
 		
 		String sql = "INSERT INTO PATIENT (first_name, last_name, address, email, vaccin_type,"
 				+ " vaccin_cov, phone, next_vaccin_date, last_vaccin_date)"
 				+ " values("
 				+ "'"+patient.firstName+"', '"+patient.lastName+"', '"+patient.address+"', '"+patient.mail+"', '"+patient.vaccine+"'  ,"
-				+ "'"+patient.numberOfDoses+"', '"+patient.phoneNumber+"', '"+next_date+"' , '"+last_date+"'  "
+				+ "'"+patient.numberOfDoses+"', '"+patient.phoneNumber+"', '"+patient.nextAppointment+"' , '"+patient.lastDose+"'  "
 				+ ")";
 		
 		SqlHandler.executeQueryWithNoReturn(sql);
 		
 	}
 	
-	public static void main(String args[]) throws SQLException, ParseException {
-		
-		Patient p = new Patient();
-		
-		p.firstName = "Cami";
-		p.lastName = "Dono";
-		p.address = "Mulhouse";
-		p.mail = "cami@gmail.com";
-		p.vaccine = VaccineType.PFIZER;
-		p.numberOfDoses = 2;
-		p.nextAppointment = new Date();
-		p.lastDose = new Date();
-		
-		SqlHandler.setTup();
-		Patient.addPatientToDb(p);
-		System.out.println(Patient.getAllPatients());
-		
-		
-	}
+//	public static void main(String args[]) throws SQLException, ParseException {
+//		
+//		Patient p = new Patient();
+//		
+//		p.firstName = "Cami";
+//		p.lastName = "Dono";
+//		p.address = "Mulhouse";
+//		p.mail = "cami@gmail.com";
+//		p.vaccine = "Pfizer";
+//		p.numberOfDoses = 2;
+//		p.nextAppointment = new Date();
+//		p.lastDose = new Date();
+//		
+//		SqlHandler.setTup();
+//		Patient.addPatientToDb(p);
+//		System.out.println(Patient.getAllPatients());
+//		
+//		
+//	}
 
 
 }

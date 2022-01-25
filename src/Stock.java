@@ -89,9 +89,9 @@ public class Stock {
 		SqlHandler.replaceStockQuery(name, quanity);
 	}
 	
-	public static void main(String args[]) throws SQLException {
-		System.out.println(getStockByNameAndDate("MASK", "2022-01-24"));
-		System.out.println(getGelByDay("2022-01-24"));
-	}
+//	public static void main(String args[]) throws SQLException {
+//		System.out.println(getStockByNameAndDate("MASK", "2022-01-24"));
+//		System.out.println(getGelByDay("2022-01-24"));
+//	}
 
 }
