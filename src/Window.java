@@ -502,7 +502,7 @@ public class Window extends JFrame implements ActionListener{
 		}
 		try {
 			Patient p = Patient.getPatientByID(Integer.parseInt(patientResearchField.getText().toString()));
-			if(p.equals(null)) {
+			if(p == null) {
 				patientResearchField.setText("patient doesn't exist");
 				return;
 			}
