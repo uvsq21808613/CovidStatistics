@@ -73,11 +73,29 @@ public class Staff {
 		return list;
 	}
 	
+	public static Staff getStaffByID(int ID) throws SQLException {
+		
+		String query = "select * from STAFF WHERE id ="+ID+";";
+		ResultSet result = SqlHandler.executeQuery(query);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		while(result.next()) {
+			Staff p = new Staff(result.getString("first_name"),
+					result.getString("last_name"),
+					result.getString("phone"),
+					result.getString("email"));
+			
+			p.ID = result.getInt("id");
+			return p;
+			
+		}
+		return null;
+	}
 	public static void main(String args[]) throws SQLException, ParseException{
 		SqlHandler.setTup();
 		Staff st = new Staff("Carlos", "Maria", "+336565657", "carloa@gmail.com");
 		Staff.addStaffToDb(st);
-		System.out.println(Staff.getAllStaffs());
+		System.out.println(Staff.getStaffByID(1).firstName);
 	}
 
 }

@@ -125,6 +125,33 @@ public class Patient {
 		return list;
 	}
 	
+	public static Patient getPatientByID(int ID) throws SQLException, ParseException {
+		String query = "select * from PATIENT WHERE id ="+ID+";";
+		ResultSet result = SqlHandler.executeQuery(query);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		while(result.next()) {
+			Patient p = new Patient();
+			
+			p.firstName = result.getString("first_name");
+			p.lastName = result.getString("last_name");
+			p.address = result.getString("address");
+			p.mail = result.getString("email");
+			p.ID = result.getInt("id");
+			
+			p.vaccine = (result.getString("vaccin_type") == "PFIZER") ? VaccineType.PFIZER : VaccineType.MODERNA;
+			
+			p.numberOfDoses = result.getInt("vaccin_cov");
+			p.nextAppointment = formatter.parse(result.getString("next_vaccin_date"));
+			p.lastDose = formatter.parse(result.getString("last_vaccin_date"));
+			
+			return p;
+			
+		}
+		return null;
+		
+	}
+	
 	public static void addPatientToDb(Patient patient) throws SQLException {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
